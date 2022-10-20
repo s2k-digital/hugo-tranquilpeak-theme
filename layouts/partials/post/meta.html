@@ -1,10 +1,23 @@
 {{ if not (eq .Params.showMeta false) }}
-  <div class="postShorten-meta post-meta">
-    {{ if not (eq .Params.showDate false)  }}
-      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
-        {{ partial "internal/date.html" . }}
-      </time>
+<div class="postShorten-meta post-meta">
+  {{ if isset .Params "authors" }}
+  {{ range $index, $author := .Params.authors }}
+  {{if $index}},{{end}}
+  <span class="author">
+    {{ if and (isset $author "url") (ne .url "") }}
+    <a href="{{ .url }}" rel="author">{{ .name }}</a>
+    {{ else }}
+    {{ $author.name }}
     {{ end }}
-    {{ partial "post/category.html" . }}
-  </div>
+  </span>
+  {{ end }}
+  on
+  {{ end }}
+  {{ if not (eq .Params.showDate false) }}
+  <time datetime="{{ .Date.Format " 2006-01-02T15:04:05Z07:00" }}">
+    {{ partial "internal/date.html" . }}
+  </time>
+  {{ end }}
+  {{ partial "post/category.html" . }}
+</div>
 {{ end }}
